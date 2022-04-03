@@ -1,0 +1,24 @@
+{
+  "name": "tech-shop-backend",
+  "version": "1.0.0",
+  "description": "Online tech shop backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adnan-mujagic/tech-shop-backend.git"
+  },
+  "keywords": [
+    "TechShop",
+    "Online",
+    "Shop"
+  ],
+  "author": "adnan-mujagic, amarell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adnan-mujagic/tech-shop-backend/issues"
+  },
+  "homepage": "https://github.com/adnan-mujagic/tech-shop-backend#readme"
+}
