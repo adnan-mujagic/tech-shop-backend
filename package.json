@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/adnan-mujagic/tech-shop-backend/issues"
   },
-  "homepage": "https://github.com/adnan-mujagic/tech-shop-backend#readme"
+  "homepage": "https://github.com/adnan-mujagic/tech-shop-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0",
+    "nodemon": "^2.0.15"
+  }
 }
