@@ -12,7 +12,6 @@ const app = express();
 app.use(cors());
 
 app.listen(port, () => {
-  console.log(process.env.DB_PATH);
   console.log("Listening on port " + port);
 });
 
