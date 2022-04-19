@@ -1,4 +1,5 @@
 const router = require("express").Router();
+let userController = require("../controllers/userController");
 
 router.get("/", (req, res) => {
   res.json({
@@ -6,5 +7,7 @@ router.get("/", (req, res) => {
     version: "1.0.0",
   });
 });
+
+router.route("/register").post(userController.register);
 
 module.exports = router;
