@@ -4,4 +4,4 @@ const forExport = {
   DB_OPTIONS,
 };
 
-export default forExport;
+module.exports = forExport;
