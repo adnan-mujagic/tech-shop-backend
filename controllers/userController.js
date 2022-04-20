@@ -1,7 +1,8 @@
 const e = require("express");
 const { entityFactory } = require("../entityFactory");
 const User = require("../models/userModel");
-const { registerValidation } = require("./../validation");
+const { registerValidation, loginValidation } = require("./../validation");
+const jwt = require("./../utilities/jwt");
 
 module.exports.register = async (req, res) => {
   const errors = registerValidation(req.body);
@@ -31,5 +32,36 @@ module.exports.register = async (req, res) => {
         data: savedUser,
       });
     }
+  });
+};
+
+module.exports.login = async (req, res) => {
+  const errors = loginValidation(req.body);
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      errors,
+    });
+  }
+
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return res.status(400).json({
+      error: "The user with this email address does not exist",
+    });
+  }
+
+  if (user.password !== req.body.password) {
+    return res.status(400).json({
+      error: "Email or password is incorrect",
+    });
+  }
+
+  let token = jwt.sign(user);
+
+  return res.status(200).json({
+    success: true,
+    token,
   });
 };
