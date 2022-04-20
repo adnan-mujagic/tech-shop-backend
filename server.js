@@ -1,11 +1,12 @@
-import express, { urlencoded, json } from "express";
-import mongoose from "mongoose";
+let express = require("express");
+let mongoose = require("mongoose");
 let port = process.env.PORT || 3000;
-import config from "./config.js";
-import cors from "cors";
-import dotenv from "dotenv";
+let config = require("./config.js");
+let cors = require("cors");
+require("dotenv").config();
 
-dotenv.config();
+// Import routes here
+let authRoutes = require("./routes/auth");
 
 const app = express();
 
@@ -16,15 +17,16 @@ app.listen(port, () => {
 });
 
 app.use(
-  urlencoded({
+  express.urlencoded({
     extended: true,
   })
 );
 
-app.use(json());
+app.use(express.json());
 
 // Here we will add all the routes!
 // app.use("/api", userRoute)
+app.use("/", authRoutes);
 
 const mongo = mongoose.connect(process.env.DB_PATH, config.DB_OPTIONS);
 
