@@ -13,7 +13,7 @@ const validateMissingFields = (required_fields, data) => {
       msg = msg + missing_field + ", ";
     });
     msg = msg.substring(0, msg.length - 2);
-    msg = msg + " is/are required. ";
+    msg = msg + " is/are required";
     return msg;
   }
   return 0;

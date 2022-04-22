@@ -15,18 +15,17 @@ const registerValidation = (data) => {
   let missing_fields = validateMissingFields(required_fields, data);
 
   if (missing_fields) {
-    errors.push({ error: missing_fields });
+    errors.push(missing_fields);
   }
 
   if (data.username && data.username.length <= 4) {
-    errors.push({ error: "The username has to be at least 4 chars long" });
+    errors.push("The username has to be at least 4 characters long");
   }
 
   if (data.password && !passwordRegex.test(data.password)) {
-    errors.push({
-      error:
-        "The password must have at least 8 chars, including at least 1 special character and at least 1 digit",
-    });
+    errors.push(
+      "The password must have at least 8 characters, including at least 1 special character and at least 1 digit"
+    );
   }
 
   return errors;
