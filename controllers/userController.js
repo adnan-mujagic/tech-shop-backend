@@ -65,3 +65,26 @@ module.exports.login = async (req, res) => {
     token,
   });
 };
+
+module.exports.getUser = async (req, res) => {
+  const user = await User.findOne({ _id: req.params.user_id });
+
+  if (!user) {
+    res.status(400).json({
+      success: false,
+      error: "Something went wrong.",
+    });
+  }
+
+  if (user) {
+    res.status(200).json({
+      success: true,
+      _id: user._id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      profile_picture: user.profile_picture,
+      email: user.email,
+    });
+  }
+};
