@@ -1,0 +1,6 @@
+{
+  "name": "Run Tests!",
+  "description": "Test a Node.js project with npm.",
+  "iconName": "octicon code-square",
+  "categories": ["Continuous integration", "JavaScript"]
+}
