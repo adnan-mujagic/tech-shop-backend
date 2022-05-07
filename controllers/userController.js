@@ -88,3 +88,41 @@ module.exports.getUser = async (req, res) => {
     });
   }
 };
+
+module.exports.updateUser = async (req, res) => {
+  if (!req.headers.authorization) {
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
+
+  const loggedInUser = jwt.verify(req.headers.authorization);
+
+  if (req.params.user_id !== loggedInUser.uid) {
+    return res.status(200).json({
+      message: "You can only edit your own profile",
+    });
+  }
+
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      message: "You didn't make any changes",
+    });
+  }
+
+  const update = req.body;
+
+  const user = await User.findByIdAndUpdate(loggedInUser.uid, update, {
+    new: true,
+  });
+
+  if (user) {
+    return res.status(200).json({
+      message: "Successfuly updated your profile",
+    });
+  }
+
+  return res.status(400).json({
+    message: "Something went wrong",
+  });
+};
