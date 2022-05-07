@@ -30,7 +30,7 @@ app.use(express.json());
 // app.use("/api", userRoute)
 app.use("/", authRoutes);
 app.use("/", userRoutes);
-app.use("/", productRoutes);
+app.use("/products", productRoutes);
 
 const mongo = mongoose.connect(process.env.DB_PATH, config.DB_OPTIONS);
 
