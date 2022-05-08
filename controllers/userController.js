@@ -65,3 +65,64 @@ module.exports.login = async (req, res) => {
     token,
   });
 };
+
+module.exports.getUser = async (req, res) => {
+  const user = await User.findOne({ _id: req.params.user_id });
+
+  if (!user) {
+    res.status(400).json({
+      success: false,
+      error: "Something went wrong.",
+    });
+  }
+
+  if (user) {
+    res.status(200).json({
+      success: true,
+      _id: user._id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      profile_picture: user.profile_picture,
+      email: user.email,
+    });
+  }
+};
+
+module.exports.updateUser = async (req, res) => {
+  if (!req.headers.authorization) {
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
+
+  const loggedInUser = jwt.verify(req.headers.authorization);
+
+  if (req.params.user_id !== loggedInUser.uid) {
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
+
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      message: "You didn't make any changes",
+    });
+  }
+
+  const update = req.body;
+
+  const user = await User.findByIdAndUpdate(loggedInUser.uid, update, {
+    new: true,
+  });
+
+  if (user) {
+    return res.status(200).json({
+      message: "Successfuly updated your profile",
+    });
+  }
+
+  return res.status(400).json({
+    message: "Something went wrong",
+  });
+};
