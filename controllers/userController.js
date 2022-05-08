@@ -99,8 +99,8 @@ module.exports.updateUser = async (req, res) => {
   const loggedInUser = jwt.verify(req.headers.authorization);
 
   if (req.params.user_id !== loggedInUser.uid) {
-    return res.status(200).json({
-      message: "You can only edit your own profile",
+    return res.status(403).json({
+      message: "Unauthorized",
     });
   }
 
