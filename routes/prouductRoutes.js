@@ -6,6 +6,8 @@ const {
 
 const router = require("express").Router();
 
-router.route("/").post(createProduct).put(updateProduct).delete(deleteProduct);
+router.route("/").post(createProduct);
+
+router.route("/:product_id").put(updateProduct).delete(deleteProduct);
 
 module.exports = router;

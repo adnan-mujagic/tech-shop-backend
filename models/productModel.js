@@ -22,11 +22,9 @@ const productSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  properties: [
-    {
-      type: Object,
-    },
-  ],
+  properties: {
+    type: Object,
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);
