@@ -40,7 +40,7 @@ module.exports.login = async (req, res) => {
 
   if (errors.length > 0) {
     return res.status(400).json({
-      message: errors.join(". "),
+      message: errors[0].error,
     });
   }
 
