@@ -1,6 +1,6 @@
 let express = require("express");
 let mongoose = require("mongoose");
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 3001;
 let config = require("./config.js");
 let cors = require("cors");
 require("dotenv").config();
@@ -9,6 +9,7 @@ require("dotenv").config();
 let authRoutes = require("./routes/auth");
 let productRoutes = require("./routes/prouductRoutes");
 let userRoutes = require("./routes/users");
+let orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use("/", authRoutes);
 app.use("/", userRoutes);
 app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 
 const mongo = mongoose.connect(process.env.DB_PATH, config.DB_OPTIONS);
 

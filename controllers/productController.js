@@ -4,7 +4,7 @@ const { updateEntity } = require("../utilities/updateEntity");
 const { verifyAuthorization } = require("../utilities/verifyAuthorization");
 
 module.exports.createProduct = async (req, res) => {
-  if (!verifyAuthorization(req.headers, "ADMIN")) {
+  if (!verifyAuthorization(req.headers, ["NORMAL", "ADMIN"])) {
     return res.status(403).json({
       message: "This action is not allowed for your role",
     });
@@ -59,7 +59,7 @@ module.exports.getProducts = async (req, res) => {
 };
 
 module.exports.updateProduct = async (req, res) => {
-  if (!verifyAuthorization(req.headers, "ADMIN")) {
+  if (!verifyAuthorization(req.headers, ["NORMAL", "ADMIN"])) {
     return res.status(403).json({
       message: "This action is not allowed for your role",
     });
@@ -86,7 +86,7 @@ module.exports.updateProduct = async (req, res) => {
 };
 
 module.exports.deleteProduct = async (req, res) => {
-  if (!verifyAuthorization(req.headers, "ADMIN")) {
+  if (!verifyAuthorization(req.headers, ["ADMIN"])) {
     return res.status(403).json({
       message: "This action is not allowed for your role",
     });
