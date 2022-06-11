@@ -1,8 +1,8 @@
 const JWT = require("../utilities/jwt");
 const OrderFactory = require("../utilities/OrderFactory");
 const { verifyAuthorization } = require("../utilities/verifyAuthorization");
-let { ObjectId } = require("mongodb");
 const Order = require("../models/orderModel");
+const mongoose = require("mongoose");
 
 module.exports.addOrder = async (req, res) => {
   if (!verifyAuthorization(req.headers, ["NORMAL", "ADMIN"])) {
@@ -36,33 +36,20 @@ module.exports.canReview = async (req, res) => {
     { $unwind: "$products" },
     {
       $match: {
-        buyer: new ObjectId(uid),
-        "products.product_id": new ObjectId(req.params.product_id),
-      },
-    },
-    {
-      $group: {
-        _id: {
-          buyer: "$buyer",
-          product: "$products.product_id",
-        },
-        count: { $sum: "$products.quantity" },
+        buyer: new mongoose.Types.ObjectId(uid),
+        "products.product_id": new mongoose.Types.ObjectId(
+          req.params.product_id
+        ),
       },
     },
   ];
 
-  const agg = Order.find(pipeline);
+  const agg = await Order.aggregate(pipeline);
   let data = [];
   for await (const doc of agg) {
     data.push(doc);
   }
-  if (data.length === 0) {
-    return res.status(200).json({
-      canReview: false,
-    });
-  }
-  console.log(data[0]);
   return res.status(200).json({
-    canReview: data[0].count > 0,
+    canReview: data.length > 0,
   });
 };
