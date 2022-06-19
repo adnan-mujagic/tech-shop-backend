@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const { registerValidation, loginValidation } = require("./../validation");
 const jwt = require("./../utilities/jwt");
 const { updateEntity } = require("../utilities/updateEntity");
+const { verifyAuthorization } = require("../utilities/verifyAuthorization");
 
 module.exports.register = async (req, res) => {
   const errors = registerValidation(req.body);
