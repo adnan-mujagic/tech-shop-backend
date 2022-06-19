@@ -98,7 +98,7 @@ module.exports.updateUser = async (req, res) => {
 
   const loggedInUser = jwt.verify(req.headers.authorization);
 
-  if (req.params.user_id !== loggedInUser.uid) {
+  if (req.params.user_id !== loggedInUser?.uid) {
     return res.status(403).json({
       message: "Unauthorized",
     });

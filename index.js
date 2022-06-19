@@ -11,6 +11,7 @@ let productRoutes = require("./routes/prouductRoutes");
 let userRoutes = require("./routes/users");
 let orderRoutes = require("./routes/orderRoutes");
 let reviewRoutes = require("./routes/reviewRoutes");
+let adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/", userRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/admin", adminRoutes);
 
 const mongo = mongoose.connect(process.env.DB_PATH, config.DB_OPTIONS);
 
