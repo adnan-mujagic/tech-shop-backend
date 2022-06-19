@@ -2,6 +2,7 @@ const JWT = require("../utilities/jwt");
 const OrderFactory = require("../utilities/OrderFactory");
 const { verifyAuthorization } = require("../utilities/verifyAuthorization");
 const Order = require("../models/orderModel");
+const Review = require("../models/reviewModel");
 const mongoose = require("mongoose");
 
 module.exports.addOrder = async (req, res) => {
@@ -32,6 +33,25 @@ module.exports.canReview = async (req, res) => {
     });
   }
   let { uid } = JWT.verify(req.headers.authorization);
+
+  // check if review by the logged in user for this product already exists
+  try {
+    const reviews = await Review.find({
+      user: uid,
+      product: req.params.product_id,
+    });
+
+    if (reviews.length > 0) {
+      return res.status(200).json({
+        canReview: false,
+      });
+    }
+  } catch (err) {
+    return res.status(400).json({
+      message: "Something went wrong",
+    });
+  }
+
   const pipeline = [
     { $unwind: "$products" },
     {
