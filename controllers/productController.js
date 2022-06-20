@@ -39,8 +39,17 @@ module.exports.getProduct = async (req, res) => {
 };
 
 module.exports.getProducts = async (req, res) => {
-  const { page = 1, pageSize = 25 } = req.query;
-  Product.find({})
+  const { page = 1, pageSize = 25, search = null } = req.query;
+  let criteria = {};
+  if (search != null) {
+    let reg = {
+      $regex: search,
+      $options: "i", // makes the search criteria case insensitive
+    };
+    criteria["name"] = reg;
+  }
+
+  Product.find(criteria)
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .exec((err, products) => {
