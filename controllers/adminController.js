@@ -1,5 +1,6 @@
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
+const Review = require("../models/reviewModel");
 const { verifyAuthorization } = require("../utilities/verifyAuthorization");
 
 module.exports.isAdmin = (req, res) => {
@@ -81,4 +82,64 @@ module.exports.mostSold = async (req, res) => {
     message: "Most sold items fetched successfully",
     data: data,
   });
+};
+
+module.exports.getFavoriteProducts = async (req, res) => {
+  if (!verifyAuthorization(req.headers, ["ADMIN"])) {
+    return res.status(403).json({
+      message: "Unauthorized",
+    });
+  }
+
+  const pipeline = [
+    {
+      $group: {
+        _id: "$product",
+        average_rating: {
+          $avg: "$rating",
+        },
+      },
+    },
+    {
+      $sort: {
+        average_rating: -1,
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "_id",
+        as: "product",
+      },
+    },
+    {
+      $unwind: {
+        path: "$product",
+      },
+    },
+    {
+      $limit: 5,
+    },
+    {
+      $project: {
+        product: 1,
+        _id: 0,
+        average_rating: 1,
+      },
+    },
+  ];
+
+  const data = await Review.aggregate(pipeline);
+
+  if (data) {
+    return res.status(200).json({
+      message: "Best rated products fetched successfully",
+      data,
+    });
+  } else {
+    return res.status(400).json({
+      message: "Something went wrong when fetching best rated products",
+    });
+  }
 };
